@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Image Converter </title>
+  <link rel="icon" type="image/png" href="Pro.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{ --footer-height:64px; }
+    body{
+      font-family:Inter,system-ui;
+      background:#f3f4f6;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    nav{position:fixed;top:0;left:0;right:0;z-index:30;}
+    .main{
+      max-width:520px;
+      margin:auto;
+      padding:20px 16px;
+      padding-top:96px;
+      padding-bottom:calc(var(--footer-height) + 24px);
+      flex:1 0 auto;
+    }
+    footer{
+      background:#111827;
+      color:white;
+      height:var(--footer-height);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    @media(max-width:768px){
+      footer{position:fixed;bottom:0;left:0;right:0;z-index:35;}
+    }
+    .whatsapp-btn{
+      width:46px;height:46px;border-radius:12px;
+      background:#25D366;color:white;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 6px 18px rgba(0,0,0,.18);
+    }
+    .card{
+      background:white;
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      margin-bottom:24px;
+      text-align:center;
+    }
+    .upload{
+      border:2px dashed #c7d2fe;
+      border-radius:12px;
+      padding:28px;
+      cursor:pointer;
+    }
+    .upload:hover{background:#eef2ff}
+    .btn{
+      margin-top:16px;
+      width:100%;
+      padding:14px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#ec4899,#8b5cf6);
+      color:white;
+      font-weight:600;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+    <span class="text-xl font-bold text-indigo-600">
+      Pro <span class="text-gray-800">Developing.</span>
+    </span>
+    <a id="waTop" class="whatsapp-btn" href="#">
+      <i class="fa-brands fa-whatsapp fa-lg"></i>
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- JPG to PNG -->
+  <div class="card">
+    <h2 class="text-xl font-bold text-indigo-600 mb-2">JPG → PNG</h2>
+    <div class="upload" onclick="jpgInput.click()">
+      <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-500"></i>
+      <p class="mt-2">Upload JPG Image</p>
+      <input type="file" id="jpgInput" accept=".jpg,.jpeg" hidden>
+    </div>
+    <img id="jpgPreview" class="hidden mt-4 max-h-48 mx-auto rounded">
+    <button class="btn hidden" id="jpgConvert">Convert to PNG</button>
+    <button class="btn hidden bg-green-500 mt-3" id="pngDownload">
+      <i class="fa-solid fa-download"></i> Download PNG
+    </button>
+  </div>
+
+  <!-- PNG to JPG -->
+  <div class="card">
+    <h2 class="text-xl font-bold text-indigo-600 mb-2">PNG → JPG</h2>
+    <div class="upload" onclick="pngInput.click()">
+      <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-500"></i>
+      <p class="mt-2">Upload PNG Image</p>
+      <input type="file" id="pngInput" accept=".png" hidden>
+    </div>
+    <img id="pngPreview" class="hidden mt-4 max-h-48 mx-auto rounded">
+    <button class="btn hidden" id="pngConvert">Convert to JPG</button>
+    <button class="btn hidden bg-green-500 mt-3" id="jpgDownload">
+      <i class="fa-solid fa-download"></i> Download JPG
+    </button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © Powered by <a href="https://mpdeveloping.github.io/mpwebsite/" class="underline text-indigo-400 ml-1">Pro Developing</a>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a id="waFloating" class="whatsapp-btn" style="position:fixed;right:16px;bottom:calc(var(--footer-height) + 16px);z-index:45">
+  <i class="fa-brands fa-whatsapp fa-2x"></i>
+</a>
+
+<script>
+const wa="916356952788";
+waTop.onclick=e=>{e.preventDefault();window.open(`https://wa.me/${wa}`,'_blank')};
+waFloating.onclick=e=>{e.preventDefault();window.open(`https://wa.me/${wa}`,'_blank')};
+
+// helper download
+function downloadBlob(dataURL, filename){
+  fetch(dataURL)
+    .then(res=>res.blob())
+    .then(blob=>{
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement("a");
+      a.href=url;
+      a.download=filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+}
+
+// JPG → PNG
+let jpgData=null, pngResult=null;
+jpgInput.onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{jpgData=r.result;jpgPreview.src=jpgData;jpgPreview.classList.remove('hidden');jpgConvert.classList.remove('hidden')};
+  r.readAsDataURL(f);
+};
+jpgConvert.onclick=()=>{
+  const i=new Image();
+  i.onload=()=>{
+    const c=document.createElement('canvas');
+    c.width=i.width;c.height=i.height;
+    c.getContext('2d').drawImage(i,0,0);
+    pngResult=c.toDataURL('image/png');
+    pngDownload.classList.remove('hidden');
+  };
+  i.src=jpgData;
+};
+pngDownload.onclick=()=>downloadBlob(pngResult,"converted.png");
+
+// PNG → JPG
+let pngData=null, jpgResult=null;
+pngInput.onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{pngData=r.result;pngPreview.src=pngData;pngPreview.classList.remove('hidden');pngConvert.classList.remove('hidden')};
+  r.readAsDataURL(f);
+};
+pngConvert.onclick=()=>{
+  const i=new Image();
+  i.onload=()=>{
+    const c=document.createElement('canvas');
+    c.width=i.width;c.height=i.height;
+    const ctx=c.getContext('2d');
+    ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);
+    ctx.drawImage(i,0,0);
+    jpgResult=c.toDataURL('image/jpeg',0.92);
+    jpgDownload.classList.remove('hidden');
+  };
+  i.src=pngData;
+};
+jpgDownload.onclick=()=>downloadBlob(jpgResult,"converted.jpg");
+</script>
+
+</body>
+</html>
