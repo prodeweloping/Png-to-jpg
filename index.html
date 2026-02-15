@@ -2,48 +2,97 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Image Converter </title>
+  <title>Image Converter · Pro Developing</title>
   <link rel="icon" type="image/png" href="Pro.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Tailwind + FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- Google Font: Inter (bold & clean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    :root{ --footer-height:64px; }
+    :root{ --footer-height: 70px; }
     body{
-      font-family:Inter,system-ui;
-      background:#f3f4f6;
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    nav{position:fixed;top:0;left:0;right:0;z-index:30;}
+
+    /* ✅ NEW NAVBAR (blue+orange logo + whatsapp) */
+    .new-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.02);
+      padding: 0.6rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-blue {
+      color: #007BFF;
+      font-weight: 800;
+      font-size: 1.9rem;
+      letter-spacing: -0.5px;
+    }
+    .logo-orange {
+      color: #FF6F00;
+      font-weight: 800;
+      font-size: 1.9rem;
+      letter-spacing: -0.5px;
+    }
+    .whatsapp-nav {
+      background-color: #25D366;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
+      box-shadow: 0 6px 12px rgba(37,211,102,0.2);
+      text-decoration: none;
+    }
+    .whatsapp-nav:hover {
+      transform: scale(1.12);
+      box-shadow: 0 10px 18px rgba(37,211,102,0.35);
+    }
+
+    /* main container */
     .main{
-      max-width:520px;
-      margin:auto;
-      padding:20px 16px;
-      padding-top:96px;
-      padding-bottom:calc(var(--footer-height) + 24px);
-      flex:1 0 auto;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 20px 16px;
+      padding-top: 96px;
+      padding-bottom: calc(var(--footer-height) + 24px);
+      flex: 1 0 auto;
     }
-    footer{
-      background:#111827;
-      color:white;
-      height:var(--footer-height);
-      display:flex;
-      align-items:center;
-      justify-content:center;
+
+    /* floating whatsapp (matches navbar style) */
+    .whatsapp-float {
+      background-color: #25D366;
+      width: 56px; height: 56px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 2rem; box-shadow: 0 8px 20px rgba(37,211,102,0.3);
+      transition: transform 0.2s;
+      text-decoration: none;
     }
-    @media(max-width:768px){
-      footer{position:fixed;bottom:0;left:0;right:0;z-index:35;}
-    }
-    .whatsapp-btn{
-      width:46px;height:46px;border-radius:12px;
-      background:#25D366;color:white;
-      display:flex;align-items:center;justify-content:center;
-      box-shadow:0 6px 18px rgba(0,0,0,.18);
-    }
+    .whatsapp-float:hover { transform: scale(1.1); }
+
+    /* card style */
     .card{
       background:white;
       border-radius:16px;
@@ -59,82 +108,142 @@
       cursor:pointer;
     }
     .upload:hover{background:#eef2ff}
-    .btn{
-      margin-top:16px;
-      width:100%;
-      padding:14px;
-      border-radius:999px;
-      background:linear-gradient(135deg,#ec4899,#8b5cf6);
-      color:white;
-      font-weight:600;
+
+    /* ✅ GRADIENT BUTTON (replaces old pink/purple) */
+    .btn-gradient {
+      margin-top: 16px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      background: linear-gradient(145deg, #007BFF, #FF6F00);
+      background-size: 150% auto;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      box-shadow: 0 8px 18px rgba(0, 123, 255, 0.25);
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
+    .btn-gradient:hover {
+      background-position: right center;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 26px rgba(255, 111, 0, 0.3);
+    }
+
+    /* ✅ FOOTER: fixed, exactly "Design by Pro Developing" with yellow link */
+    footer.fixed-footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--footer-height);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      padding: 0 16px;
+      box-shadow: 0 -4px 20px rgba(2,6,23,0.12);
+    }
+    .design-footer {
+      color: #94a3b8;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+    .design-footer .yellow-link {
+      color: #fbbf24;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .design-footer .yellow-link:hover {
+      text-decoration: underline;
+    }
+
+    @media(max-width:768px){
+      footer.fixed-footer{ position: fixed; }
+    }
+
+    /* small utility */
+    .hidden{ display:none; }
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="bg-white shadow-sm">
-  <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-    <span class="text-xl font-bold text-indigo-600">
-      Pro <span class="text-gray-800">Developing.</span>
-    </span>
-    <a id="waTop" class="whatsapp-btn" href="#">
-      <i class="fa-brands fa-whatsapp fa-lg"></i>
-    </a>
+<!-- ✅ NEW NAVBAR (Pro blue + Developing orange) with WhatsApp icon -->
+<nav class="new-nav">
+  <div class="flex items-center">
+    <span class="logo-blue">Pro</span>
+    <span class="logo-orange">Developing</span>
   </div>
+  <a id="waTop" class="whatsapp-nav" href="#" title="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
 </nav>
 
 <!-- MAIN -->
 <div class="main">
 
-  <!-- JPG to PNG -->
+  <!-- JPG to PNG card -->
   <div class="card">
     <h2 class="text-xl font-bold text-indigo-600 mb-2">JPG → PNG</h2>
-    <div class="upload" onclick="jpgInput.click()">
+    <div class="upload" onclick="document.getElementById('jpgInput').click()">
       <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-500"></i>
       <p class="mt-2">Upload JPG Image</p>
       <input type="file" id="jpgInput" accept=".jpg,.jpeg" hidden>
     </div>
     <img id="jpgPreview" class="hidden mt-4 max-h-48 mx-auto rounded">
-    <button class="btn hidden" id="jpgConvert">Convert to PNG</button>
-    <button class="btn hidden bg-green-500 mt-3" id="pngDownload">
+    <!-- ✅ GRADIENT BUTTON for convert -->
+    <button class="btn-gradient hidden" id="jpgConvert">Convert to PNG</button>
+    <button class="btn-gradient hidden bg-green-500 mt-3" id="pngDownload" style="background:linear-gradient(145deg,#059669,#10b981)"> 
       <i class="fa-solid fa-download"></i> Download PNG
     </button>
   </div>
 
-  <!-- PNG to JPG -->
+  <!-- PNG to JPG card -->
   <div class="card">
     <h2 class="text-xl font-bold text-indigo-600 mb-2">PNG → JPG</h2>
-    <div class="upload" onclick="pngInput.click()">
+    <div class="upload" onclick="document.getElementById('pngInput').click()">
       <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-500"></i>
       <p class="mt-2">Upload PNG Image</p>
       <input type="file" id="pngInput" accept=".png" hidden>
     </div>
     <img id="pngPreview" class="hidden mt-4 max-h-48 mx-auto rounded">
-    <button class="btn hidden" id="pngConvert">Convert to JPG</button>
-    <button class="btn hidden bg-green-500 mt-3" id="jpgDownload">
+    <!-- ✅ GRADIENT BUTTON for convert -->
+    <button class="btn-gradient hidden" id="pngConvert">Convert to JPG</button>
+    <button class="btn-gradient hidden bg-green-500 mt-3" id="jpgDownload" style="background:linear-gradient(145deg,#059669,#10b981)">
       <i class="fa-solid fa-download"></i> Download JPG
     </button>
   </div>
 
 </div>
 
-<!-- FOOTER -->
-<footer>
-  © Powered by <a href="https://www.prodeveloping.online/" class="underline text-indigo-400 ml-1">Pro Developing</a>
+<!-- ✅ NEW FOOTER: "Design by Pro Developing" with yellow link -->
+<footer class="fixed-footer">
+  <div class="design-footer">
+    Design by <a href="https://www.prodeveloping.online/" target="_blank" class="yellow-link">Pro Developing</a>
+  </div>
 </footer>
 
-<!-- Floating WhatsApp -->
-<a id="waFloating" class="whatsapp-btn" style="position:fixed;right:16px;bottom:calc(var(--footer-height) + 16px);z-index:45">
+<!-- Floating WhatsApp (bottom-right) -->
+<a id="waFloating" class="whatsapp-float" href="#" style="position:fixed; right:16px; bottom:calc(var(--footer-height) + 16px); z-index:45;" title="Chat on WhatsApp">
   <i class="fa-brands fa-whatsapp fa-2x"></i>
 </a>
 
 <script>
-const wa="916356952788";
-waTop.onclick=e=>{e.preventDefault();window.open(`https://wa.me/${wa}`,'_blank')};
-waFloating.onclick=e=>{e.preventDefault();window.open(`https://wa.me/${wa}`,'_blank')};
+// WhatsApp setup
+const waNumber = "916356952788";
+const waMessage = encodeURIComponent('Hello! I am using your Image Converter 😊');
+document.getElementById('waTop').onclick = e => {
+  e.preventDefault();
+  window.open(`https://wa.me/${waNumber}?text=${waMessage}`, '_blank');
+};
+document.getElementById('waFloating').onclick = e => {
+  e.preventDefault();
+  window.open(`https://wa.me/${waNumber}?text=${waMessage}`, '_blank');
+};
 
-// helper download
+// Helper download
 function downloadBlob(dataURL, filename){
   fetch(dataURL)
     .then(res=>res.blob())
@@ -150,8 +259,13 @@ function downloadBlob(dataURL, filename){
     });
 }
 
-// JPG → PNG
+// ---------- JPG → PNG ----------
 let jpgData=null, pngResult=null;
+const jpgInput=document.getElementById('jpgInput');
+const jpgPreview=document.getElementById('jpgPreview');
+const jpgConvert=document.getElementById('jpgConvert');
+const pngDownload=document.getElementById('pngDownload');
+
 jpgInput.onchange=e=>{
   const f=e.target.files[0]; if(!f)return;
   const r=new FileReader();
@@ -171,8 +285,13 @@ jpgConvert.onclick=()=>{
 };
 pngDownload.onclick=()=>downloadBlob(pngResult,"converted.png");
 
-// PNG → JPG
+// ---------- PNG → JPG ----------
 let pngData=null, jpgResult=null;
+const pngInput=document.getElementById('pngInput');
+const pngPreview=document.getElementById('pngPreview');
+const pngConvert=document.getElementById('pngConvert');
+const jpgDownload=document.getElementById('jpgDownload');
+
 pngInput.onchange=e=>{
   const f=e.target.files[0]; if(!f)return;
   const r=new FileReader();
