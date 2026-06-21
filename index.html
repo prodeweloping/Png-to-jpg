@@ -2,149 +2,410 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Image Converter · Pro Developing</title>
-  <link rel="icon" type="image/png" href="Pro.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Tailwind + FontAwesome -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- Google Font: Inter (bold & clean) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pro Toolss · Image Converter</title>
+  
+  <!-- ✅ SEO: Meta tags -->
+  <meta name="description" content="Free PNG to JPG and JPG to PNG converter. Convert images instantly in your browser." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.protoolss.online/image-converter" />
+  <meta name="theme-color" content="#007BFF" />
+  
+  <!-- ✅ Open Graph tags -->
+  <meta property="og:title" content="Pro Toolss · Image Converter" />
+  <meta property="og:description" content="Free PNG to JPG and JPG to PNG converter. Convert images instantly in your browser." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.protoolss.online/image-converter" />
+  <meta property="og:image" content="https://www.protoolss.online/og-image.png" />
+  
+  <link rel="icon" type="image/png" href="Pro.png" />
+  
+  <!-- ✅ Font Awesome 6.5.1 (fixed) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  
+  <!-- Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- JSZip for Save All -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  
   <style>
-    :root{ --footer-height: 70px; }
-    body{
+    * { box-sizing: border-box; }
+    body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: #f3f4f6;
+      background: #f1f5f9;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      margin: 0;
+      padding-bottom: 76px;
     }
 
-    /* ✅ NEW NAVBAR (blue+orange logo + whatsapp) */
+    /* ---------- NAV (Pro Toolss) ---------- */
     .new-nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 50;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(4px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.02);
-      padding: 0.6rem 2rem;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(6px);
+      padding: 0.6rem 1.8rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
     }
-    .logo-blue {
-      color: #007BFF;
-      font-weight: 800;
-      font-size: 1.9rem;
-      letter-spacing: -0.5px;
-    }
-    .logo-orange {
-      color: #FF6F00;
-      font-weight: 800;
-      font-size: 1.9rem;
-      letter-spacing: -0.5px;
-    }
-    .whatsapp-nav {
-      background-color: #25D366;
+    .logo-blue { color: #007BFF; font-weight: 800; font-size: 1.9rem; letter-spacing: -0.5px; }
+    .logo-orange { color: #FF6F00; font-weight: 800; font-size: 1.9rem; letter-spacing: -0.5px; }
+
+    /* Flex utilities */
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+
+    /* ---------- 3‑LINE MENU BUTTON ---------- */
+    .menu-btn {
       width: 48px;
       height: 48px;
-      border-radius: 50%;
+      background: transparent;
+      border: none;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: 0.2s;
+      padding: 0;
+    }
+    .menu-btn span {
+      display: block;
+      width: 28px;
+      height: 3.5px;
+      background: #0f172a;
+      border-radius: 4px;
+      transition: 0.2s;
+    }
+    .menu-btn:hover { background: rgba(0, 123, 255, 0.06); }
+    .menu-btn:hover span { background: #007BFF; }
+    .menu-btn:active { transform: scale(0.92); }
+
+    /* main container */
+    .main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 100px 16px 24px;
+      flex: 1 0 auto;
+      width: 100%;
+    }
+
+    /* ---------- CONVERTER CARD ---------- */
+    .converter-card {
+      background: white;
+      border-radius: 24px;
+      padding: 28px 24px 32px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+      margin-bottom: 24px;
+      border: 1px solid #f0f2f5;
+    }
+
+    /* ---------- TAB HEADER ---------- */
+    .tab-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+      padding: 6px;
+      background: #f1f5f9;
+      border-radius: 16px;
+      border: 1px solid #e8edf4;
+      position: relative;
+    }
+    .tab-item {
+      flex: 1;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: transparent;
+      color: #94a3b8;
+      letter-spacing: -0.2px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 1.8rem;
-      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
-      box-shadow: 0 6px 12px rgba(37,211,102,0.2);
-      text-decoration: none;
+      gap: 8px;
+      position: relative;
+      font-family: 'Inter', system-ui, sans-serif;
     }
-    .whatsapp-nav:hover {
-      transform: scale(1.12);
-      box-shadow: 0 10px 18px rgba(37,211,102,0.35);
+    .tab-item i {
+      font-size: 1rem;
+      opacity: 0.6;
+      transition: 0.3s;
+    }
+    .tab-item.active {
+      background: white;
+      color: #007BFF;
+      box-shadow: 0 4px 16px rgba(0, 123, 255, 0.12), 0 1px 4px rgba(0,0,0,0.02);
+      transform: scale(1.02);
+    }
+    .tab-item.active i {
+      opacity: 1;
+      color: #007BFF;
+    }
+    .tab-item:hover:not(.active) {
+      color: #475569;
+      background: rgba(255,255,255,0.5);
+    }
+    .tab-item:hover:not(.active) i {
+      opacity: 0.8;
+    }
+    .tab-item .arrow-icon {
+      font-size: 0.8rem;
+      opacity: 0.4;
+      margin: 0 2px;
+    }
+    .tab-item.active .arrow-icon {
+      opacity: 0.6;
+      color: #007BFF;
     }
 
-    /* main container */
-    .main{
-      max-width: 520px;
-      margin: 0 auto;
-      padding: 20px 16px;
-      padding-top: 96px;
-      padding-bottom: calc(var(--footer-height) + 24px);
-      flex: 1 0 auto;
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #1e293b;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: #007BFF;
+      background: #f8faff;
+      color: #007BFF;
+    }
+    .btn-outline i { font-size: 1rem; }
+    .btn-clear {
+      border-color: #fee2e2;
+      color: #ef4444;
+    }
+    .btn-clear:hover {
+      border-color: #ef4444;
+      background: #fef2f2;
     }
 
-    /* floating whatsapp (matches navbar style) */
-    .whatsapp-float {
-      background-color: #25D366;
-      width: 56px; height: 56px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 2rem; box-shadow: 0 8px 20px rgba(37,211,102,0.3);
-      transition: transform 0.2s;
-      text-decoration: none;
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed #d1d5f0;
+      border-radius: 18px;
+      padding: 40px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      background: #fafcff;
+      margin-bottom: 18px;
     }
-    .whatsapp-float:hover { transform: scale(1.1); }
+    .drop-zone:hover {
+      background: #f1f7ff;
+      border-color: #007BFF;
+    }
+    .drop-zone i {
+      font-size: 2.8rem;
+      color: #94a3b8;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .drop-zone p {
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .drop-zone .highlight {
+      color: #007BFF;
+      font-weight: 600;
+    }
 
-    /* card style */
-    .card{
-      background:white;
-      border-radius:16px;
-      padding:24px;
-      box-shadow:0 10px 30px rgba(0,0,0,.08);
-      margin-bottom:24px;
-      text-align:center;
+    /* Preview area */
+    .preview-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 18px;
+      min-height: 60px;
     }
-    .upload{
-      border:2px dashed #c7d2fe;
-      border-radius:12px;
-      padding:28px;
-      cursor:pointer;
+    .preview-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #e2e8f0;
+      width: 100px;
+      height: 100px;
     }
-    .upload:hover{background:#eef2ff}
-
-    /* ✅ GRADIENT BUTTON (replaces old pink/purple) */
-    .btn-gradient {
-      margin-top: 16px;
+    .preview-item img {
       width: 100%;
-      padding: 14px;
-      border-radius: 999px;
-      background: linear-gradient(145deg, #007BFF, #FF6F00);
-      background-size: 150% auto;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      loading: "lazy";
+    }
+    .preview-item .remove {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #ef4444;
       color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .preview-item .remove i { font-size: 12px; color: white; }
+
+    .empty-preview {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      padding: 12px;
+    }
+
+    /* Action buttons */
+    .action-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .btn-primary {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
       font-weight: 700;
       font-size: 1rem;
-      border: none;
-      box-shadow: 0 8px 18px rgba(0, 123, 255, 0.25);
-      transition: all 0.3s ease;
+      background: linear-gradient(145deg, #007BFF, #0056b3);
+      color: white;
+      box-shadow: 0 8px 20px rgba(0, 123, 255, 0.20);
+      transition: all 0.25s ease;
       cursor: pointer;
     }
-    .btn-gradient:hover {
-      background-position: right center;
-      transform: translateY(-4px);
-      box-shadow: 0 16px 26px rgba(255, 111, 0, 0.3);
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(0, 123, 255, 0.30);
+      background: linear-gradient(145deg, #1a86ff, #004b9a);
+    }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-success {
+      background: linear-gradient(145deg, #059669, #047857);
+      box-shadow: 0 8px 20px rgba(5, 150, 105, 0.20);
+    }
+    .btn-success:hover:not(:disabled) {
+      background: linear-gradient(145deg, #10b981, #03684b);
+      box-shadow: 0 14px 32px rgba(5, 150, 105, 0.30);
     }
 
-    /* ✅ FOOTER: fixed, exactly "Design by Pro Developing" with yellow link */
+    /* ---------- ABOUT SECTION ---------- */
+    .about-card {
+      background: white;
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.02);
+      border: 1px solid #f0f2f5;
+      margin-top: 8px;
+    }
+    .about-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .about-card h3 i { color: #007BFF; }
+    .about-card p {
+      color: #475569;
+      line-height: 1.7;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+    .about-card .badge {
+      display: inline-block;
+      background: rgba(0, 123, 255, 0.08);
+      color: #007BFF;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-right: 4px;
+      letter-spacing: 0.3px;
+    }
+    .about-card .feature-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-top: 12px;
+      padding-top: 14px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .about-card .feature-list span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #334155;
+      font-size: 0.9rem;
+    }
+    .about-card .feature-list i {
+      color: #007BFF;
+      font-size: 0.9rem;
+      width: 18px;
+    }
+
+    /* ---------- FOOTER ---------- */
     footer.fixed-footer {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
-      height: var(--footer-height);
+      height: 70px;
       background: #0f172a;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 30;
       padding: 0 16px;
-      box-shadow: 0 -4px 20px rgba(2,6,23,0.12);
+      box-shadow: 0 -4px 16px rgba(2,6,23,0.08);
     }
     .design-footer {
       color: #94a3b8;
@@ -155,164 +416,559 @@
       color: #fbbf24;
       font-weight: 700;
       text-decoration: none;
+      margin-left: 4px;
     }
-    .design-footer .yellow-link:hover {
-      text-decoration: underline;
-    }
+    .design-footer .yellow-link:hover { text-decoration: underline; }
 
-    @media(max-width:768px){
-      footer.fixed-footer{ position: fixed; }
-    }
+    .hidden { display: none !important; }
+    .error-msg { color: #ef4444; font-size: 0.85rem; margin-top: 8px; }
 
-    /* small utility */
-    .hidden{ display:none; }
+    @media (max-width: 480px) {
+      .new-nav { padding: 0.4rem 1rem; }
+      .logo-blue, .logo-orange { font-size: 1.5rem; }
+      .menu-btn { width: 42px; height: 42px; }
+      .menu-btn span { width: 24px; height: 3px; }
+      .converter-card { padding: 20px 16px; }
+      .tab-item { font-size: 0.9rem; padding: 10px 8px; }
+      .tab-item i { font-size: 0.85rem; }
+      .btn-outline { padding: 8px 14px; font-size: 0.85rem; }
+      .action-row { flex-direction: column; }
+      .preview-item { width: 80px; height: 80px; }
+      .about-card { padding: 20px 16px; }
+      .about-card .feature-list { flex-direction: column; gap: 4px; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ✅ NEW NAVBAR (Pro blue + Developing orange) with WhatsApp icon -->
+<!-- ✅ NAVBAR -->
 <nav class="new-nav">
   <div class="flex items-center">
     <span class="logo-blue">Pro</span>
-    <span class="logo-orange">Developing</span>
+    <span class="logo-orange">Toolss</span>
   </div>
-  <a id="waTop" class="whatsapp-nav" href="#" title="Chat on WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i>
-  </a>
+  <!-- ✅ Security: menu button with safe navigation -->
+  <button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" title="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- MAIN -->
 <div class="main">
 
-  <!-- JPG to PNG card -->
-  <div class="card">
-    <h2 class="text-xl font-bold text-indigo-600 mb-2">JPG → PNG</h2>
-    <div class="upload" onclick="document.getElementById('jpgInput').click()">
-      <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-500"></i>
-      <p class="mt-2">Upload JPG Image</p>
-      <input type="file" id="jpgInput" accept=".jpg,.jpeg" hidden>
+  <!-- CONVERTER CARD -->
+  <div class="converter-card">
+
+    <!-- TAB HEADER -->
+    <div class="tab-header" role="tablist">
+      <button type="button" class="tab-item active" id="tabPngToJpg" role="tab" aria-selected="true" aria-label="Convert PNG to JPG">
+        <i class="fa-regular fa-file-image"></i>
+        PNG to JPG
+        <span class="arrow-icon"><i class="fa-solid fa-arrow-right"></i></span>
+      </button>
+      <button type="button" class="tab-item" id="tabJpgToPng" role="tab" aria-selected="false" aria-label="Convert JPG to PNG">
+        <i class="fa-regular fa-image"></i>
+        JPG to PNG
+        <span class="arrow-icon"><i class="fa-solid fa-arrow-right"></i></span>
+      </button>
     </div>
-    <img id="jpgPreview" class="hidden mt-4 max-h-48 mx-auto rounded">
-    <!-- ✅ GRADIENT BUTTON for convert -->
-    <button class="btn-gradient hidden" id="jpgConvert">Convert to PNG</button>
-    <button class="btn-gradient hidden bg-green-500 mt-3" id="pngDownload" style="background:linear-gradient(145deg,#059669,#10b981)"> 
-      <i class="fa-solid fa-download"></i> Download PNG
-    </button>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <button type="button" class="btn-outline" id="selectFilesBtn" aria-label="Select files">
+        <i class="fa-regular fa-folder-open"></i> SELECT FILES
+      </button>
+      <button type="button" class="btn-outline btn-clear" id="clearBtn" aria-label="Clear all files">
+        <i class="fa-regular fa-trash-can"></i> CLEAR
+      </button>
+    </div>
+
+    <!-- Drop zone -->
+    <div class="drop-zone" id="dropZone" role="button" aria-label="Drop files here or click to upload" tabindex="0">
+      <i class="fa-regular fa-cloud-arrow-up"></i>
+      <p>Drop Your Files Here</p>
+    </div>
+
+    <!-- Preview area -->
+    <div class="preview-area" id="previewArea" role="list" aria-label="Uploaded files">
+      <span class="empty-preview">No files selected</span>
+    </div>
+
+    <!-- Error message -->
+    <div id="errorMsg" class="error-msg" role="alert" aria-live="polite"></div>
+
+    <!-- Action row -->
+    <div class="action-row">
+      <button type="button" class="btn-primary" id="convertBtn" disabled aria-label="Convert images">
+        <i class="fa-solid fa-arrows-rotate"></i> CONVERT
+      </button>
+      <button type="button" class="btn-primary btn-success" id="saveAllBtn" disabled aria-label="Save all converted images">
+        <i class="fa-regular fa-floppy-disk"></i> SAVE ALL
+      </button>
+    </div>
   </div>
 
-  <!-- PNG to JPG card -->
-  <div class="card">
-    <h2 class="text-xl font-bold text-indigo-600 mb-2">PNG → JPG</h2>
-    <div class="upload" onclick="document.getElementById('pngInput').click()">
-      <i class="fa-solid fa-cloud-arrow-up text-4xl text-indigo-500"></i>
-      <p class="mt-2">Upload PNG Image</p>
-      <input type="file" id="pngInput" accept=".png" hidden>
+  <!-- ABOUT SECTION -->
+  <div class="about-card">
+    <h3><i class="fa-regular fa-circle-info"></i> About This Tool</h3>
+    <p>
+      <span class="badge">FREE</span>
+      <span class="badge">No upload</span>
+      <span class="badge">Private</span>
+      <span class="badge">Fast</span>
+    </p>
+    <p>
+      <strong>Pro Toolss Image Converter</strong> is a powerful, browser-based utility that lets you convert 
+      images between <strong>PNG</strong> and <strong>JPG</strong> formats instantly. 
+      Whether you're a designer, developer, or casual user, this tool makes image conversion 
+      quick and hassle-free.
+    </p>
+    <p>
+      All processing happens <strong>entirely in your browser</strong> using HTML5 Canvas — 
+      your files are never uploaded to any server. This means your images remain 
+      <strong>100% private and secure</strong>. No data is stored, shared, or tracked.
+    </p>
+    <p>
+      <strong>Note:</strong> When converting PNG to JPG, the background will be filled with white 
+      because JPG format does not support transparency.
+    </p>
+    <p>
+      The tool supports <strong>batch conversion</strong>, so you can convert multiple images at once. 
+      After conversion, you can download each file individually or use the <strong>"Save All"</strong> 
+      button to download all converted images as a single ZIP file.
+    </p>
+    
+    <div class="feature-list">
+      <span><i class="fa-regular fa-image"></i> PNG ↔ JPG conversion</span>
+      <span><i class="fa-regular fa-layer-group"></i> Batch processing</span>
+      <span><i class="fa-regular fa-file-zipper"></i> ZIP download</span>
+      <span><i class="fa-regular fa-shield"></i> 100% private</span>
+      <span><i class="fa-regular fa-clock"></i> Instant processing</span>
+      <span><i class="fa-regular fa-globe"></i> No server upload</span>
     </div>
-    <img id="pngPreview" class="hidden mt-4 max-h-48 mx-auto rounded">
-    <!-- ✅ GRADIENT BUTTON for convert -->
-    <button class="btn-gradient hidden" id="pngConvert">Convert to JPG</button>
-    <button class="btn-gradient hidden bg-green-500 mt-3" id="jpgDownload" style="background:linear-gradient(145deg,#059669,#10b981)">
-      <i class="fa-solid fa-download"></i> Download JPG
-    </button>
   </div>
 
 </div>
 
-<!-- ✅ NEW FOOTER: "Design by Pro Developing" with yellow link -->
+<!-- ✅ FOOTER with security attributes -->
 <footer class="fixed-footer">
   <div class="design-footer">
-    Design by <a href="https://www.prodeveloping.online/" target="_blank" class="yellow-link">Pro Developing</a>
+    Design by <a href="https://www.protoolss.online/" target="_blank" rel="noopener noreferrer" class="yellow-link">Pro Toolss</a>
   </div>
 </footer>
 
-<!-- Floating WhatsApp (bottom-right) -->
-<a id="waFloating" class="whatsapp-float" href="#" style="position:fixed; right:16px; bottom:calc(var(--footer-height) + 16px); z-index:45;" title="Chat on WhatsApp">
-  <i class="fa-brands fa-whatsapp fa-2x"></i>
-</a>
-
 <script>
-// WhatsApp setup
-const waNumber = "916356952788";
-const waMessage = encodeURIComponent('Hello! I am using your Image Converter 😊');
-document.getElementById('waTop').onclick = e => {
-  e.preventDefault();
-  window.open(`https://wa.me/${waNumber}?text=${waMessage}`, '_blank');
-};
-document.getElementById('waFloating').onclick = e => {
-  e.preventDefault();
-  window.open(`https://wa.me/${waNumber}?text=${waMessage}`, '_blank');
-};
+  (function() {
+    'use strict';
 
-// Helper download
-function downloadBlob(dataURL, filename){
-  fetch(dataURL)
-    .then(res=>res.blob())
-    .then(blob=>{
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement("a");
-      a.href=url;
-      a.download=filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+    // ============================================================
+    // ✅ FIX 1: Security - Safe window.open with noopener
+    // ============================================================
+    const menuBtn = document.getElementById('menuBtn');
+    menuBtn.addEventListener('click', function() {
+      window.open('https://www.protoolss.online/', '_blank', 'noopener,noreferrer');
     });
-}
 
-// ---------- JPG → PNG ----------
-let jpgData=null, pngResult=null;
-const jpgInput=document.getElementById('jpgInput');
-const jpgPreview=document.getElementById('jpgPreview');
-const jpgConvert=document.getElementById('jpgConvert');
-const pngDownload=document.getElementById('pngDownload');
+    // ============================================================
+    // ✅ FIX 2: State management
+    // ============================================================
+    let currentMode = 'png-to-jpg'; // 'png-to-jpg' or 'jpg-to-png'
+    let files = []; // Array of { id, name, dataURL, file, size }
+    let convertedResults = []; // Array of { name, dataURL }
+    let fileIdCounter = 0;
+    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-jpgInput.onchange=e=>{
-  const f=e.target.files[0]; if(!f)return;
-  const r=new FileReader();
-  r.onload=()=>{jpgData=r.result;jpgPreview.src=jpgData;jpgPreview.classList.remove('hidden');jpgConvert.classList.remove('hidden')};
-  r.readAsDataURL(f);
-};
-jpgConvert.onclick=()=>{
-  const i=new Image();
-  i.onload=()=>{
-    const c=document.createElement('canvas');
-    c.width=i.width;c.height=i.height;
-    c.getContext('2d').drawImage(i,0,0);
-    pngResult=c.toDataURL('image/png');
-    pngDownload.classList.remove('hidden');
-  };
-  i.src=jpgData;
-};
-pngDownload.onclick=()=>downloadBlob(pngResult,"converted.png");
+    // DOM refs
+    const dropZone = document.getElementById('dropZone');
+    const previewArea = document.getElementById('previewArea');
+    const selectBtn = document.getElementById('selectFilesBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const convertBtn = document.getElementById('convertBtn');
+    const saveAllBtn = document.getElementById('saveAllBtn');
+    const tabPng = document.getElementById('tabPngToJpg');
+    const tabJpg = document.getElementById('tabJpgToPng');
+    const errorMsg = document.getElementById('errorMsg');
 
-// ---------- PNG → JPG ----------
-let pngData=null, jpgResult=null;
-const pngInput=document.getElementById('pngInput');
-const pngPreview=document.getElementById('pngPreview');
-const pngConvert=document.getElementById('pngConvert');
-const jpgDownload=document.getElementById('jpgDownload');
+    // Hidden file input
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.multiple = true;
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
 
-pngInput.onchange=e=>{
-  const f=e.target.files[0]; if(!f)return;
-  const r=new FileReader();
-  r.onload=()=>{pngData=r.result;pngPreview.src=pngData;pngPreview.classList.remove('hidden');pngConvert.classList.remove('hidden')};
-  r.readAsDataURL(f);
-};
-pngConvert.onclick=()=>{
-  const i=new Image();
-  i.onload=()=>{
-    const c=document.createElement('canvas');
-    c.width=i.width;c.height=i.height;
-    const ctx=c.getContext('2d');
-    ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);
-    ctx.drawImage(i,0,0);
-    jpgResult=c.toDataURL('image/jpeg',0.92);
-    jpgDownload.classList.remove('hidden');
-  };
-  i.src=pngData;
-};
-jpgDownload.onclick=()=>downloadBlob(jpgResult,"converted.jpg");
+    // ============================================================
+    // ✅ FIX 3: Update file accept based on mode
+    // ============================================================
+    function updateAccept() {
+      fileInput.accept = currentMode === 'png-to-jpg' ? '.png,image/png' : '.jpg,.jpeg,image/jpeg';
+    }
+    updateAccept();
+
+    // ============================================================
+    // ✅ FIX 4: Render previews with lazy loading
+    // ============================================================
+    function renderPreviews() {
+      previewArea.innerHTML = '';
+      if (files.length === 0) {
+        previewArea.innerHTML = '<span class="empty-preview">No files selected</span>';
+        updateButtons();
+        return;
+      }
+      files.forEach((f) => {
+        const div = document.createElement('div');
+        div.className = 'preview-item';
+        div.setAttribute('role', 'listitem');
+        div.innerHTML = `
+          <img src="${f.dataURL}" alt="${f.name}" loading="lazy" />
+          <button type="button" class="remove" data-id="${f.id}" aria-label="Remove ${f.name}">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        `;
+        previewArea.appendChild(div);
+      });
+      
+      // Remove events
+      document.querySelectorAll('.preview-item .remove').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const id = parseInt(this.dataset.id);
+          removeFileById(id);
+        });
+      });
+      updateButtons();
+    }
+
+    function removeFileById(id) {
+      files = files.filter(f => f.id !== id);
+      convertedResults = [];
+      renderPreviews();
+      updateButtons();
+      errorMsg.textContent = '';
+    }
+
+    function updateButtons() {
+      convertBtn.disabled = files.length === 0;
+      saveAllBtn.disabled = convertedResults.length === 0;
+    }
+
+    function clearAll() {
+      // Release object URLs to prevent memory leaks
+      files.forEach(f => {
+        if (f.dataURL && f.dataURL.startsWith('blob:')) {
+          URL.revokeObjectURL(f.dataURL);
+        }
+      });
+      files = [];
+      convertedResults = [];
+      renderPreviews();
+      updateButtons();
+      errorMsg.textContent = '';
+    }
+
+    // ============================================================
+    // ✅ FIX 5: Load files with validation (type, size, duplicates)
+    // ============================================================
+    function loadFiles(fileList) {
+      errorMsg.textContent = '';
+      const validType = currentMode === 'png-to-jpg' ? 'image/png' : 'image/jpeg';
+      const validFiles = [];
+      const existingNames = new Set(files.map(f => f.name));
+
+      for (const f of fileList) {
+        // ✅ Check file type
+        if (f.type !== validType) {
+          const ext = currentMode === 'png-to-jpg' ? 'PNG' : 'JPG/JPEG';
+          errorMsg.textContent = `Only ${ext} files are allowed in this mode.`;
+          continue;
+        }
+
+        // ✅ Check file size (max 10MB)
+        if (f.size > MAX_FILE_SIZE) {
+          errorMsg.textContent = `File "${f.name}" exceeds 10MB limit.`;
+          continue;
+        }
+
+        // ✅ Prevent duplicate uploads
+        if (existingNames.has(f.name)) {
+          errorMsg.textContent = `"${f.name}" is already uploaded.`;
+          continue;
+        }
+
+        validFiles.push(f);
+        existingNames.add(f.name);
+      }
+
+      if (validFiles.length === 0) {
+        if (!errorMsg.textContent) {
+          errorMsg.textContent = `Please upload ${currentMode === 'png-to-jpg' ? 'PNG' : 'JPG/JPEG'} files.`;
+        }
+        return;
+      }
+
+      let loaded = 0;
+      validFiles.forEach((f) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const dataURL = e.target.result;
+          files.push({
+            id: fileIdCounter++,
+            name: f.name,
+            dataURL: dataURL,
+            file: f,
+            size: f.size
+          });
+          loaded++;
+          if (loaded === validFiles.length) {
+            renderPreviews();
+          }
+        };
+        reader.onerror = function() {
+          errorMsg.textContent = `Failed to read file: ${f.name}`;
+          loaded++;
+          if (loaded === validFiles.length) {
+            renderPreviews();
+          }
+        };
+        reader.readAsDataURL(f);
+      });
+    }
+
+    // ============================================================
+    // ✅ FIX 6: Drag-and-drop with validation
+    // ============================================================
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', function(e) {
+      if (this.files.length) {
+        loadFiles(this.files);
+        this.value = '';
+      }
+    });
+
+    // Keyboard accessibility for drop zone
+    dropZone.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    dropZone.addEventListener('dragover', (e) => { 
+      e.preventDefault(); 
+      dropZone.style.borderColor = '#007BFF'; 
+    });
+    dropZone.addEventListener('dragleave', () => { 
+      dropZone.style.borderColor = '#d1d5f0'; 
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.style.borderColor = '#d1d5f0';
+      if (e.dataTransfer.files.length) {
+        loadFiles(e.dataTransfer.files);
+      }
+    });
+
+    // ============================================================
+    // ✅ FIX 7: Button events
+    // ============================================================
+    selectBtn.addEventListener('click', () => fileInput.click());
+    clearBtn.addEventListener('click', clearAll);
+
+    // ============================================================
+    // ✅ FIX 8: Convert with error handling & memory optimization
+    // ============================================================
+    convertBtn.addEventListener('click', function() {
+      if (files.length === 0) return;
+      convertedResults = [];
+      let processed = 0;
+      const total = files.length;
+      let hasError = false;
+
+      files.forEach((f) => {
+        // ✅ Use Image constructor with onload/onerror
+        const img = new Image();
+        img.onload = function() {
+          try {
+            // Limit canvas size to prevent browser freezing
+            let width = img.width;
+            let height = img.height;
+            const MAX_DIMENSION = 4096;
+            if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+              const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+              width = Math.floor(width * ratio);
+              height = Math.floor(height * ratio);
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+
+            let resultName = f.name;
+            let mimeType = 'image/png';
+
+            if (currentMode === 'png-to-jpg') {
+              // PNG → JPG: white background (transparency not supported)
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, width, height);
+              ctx.drawImage(img, 0, 0, width, height);
+              resultName = f.name.replace(/\.[^.]+$/, '') + '.jpg';
+              mimeType = 'image/jpeg';
+            } else {
+              // JPG → PNG: preserve transparency
+              ctx.drawImage(img, 0, 0, width, height);
+              resultName = f.name.replace(/\.[^.]+$/, '') + '.png';
+              mimeType = 'image/png';
+            }
+
+            const dataURL = canvas.toDataURL(mimeType, 0.92);
+            convertedResults.push({ name: resultName, dataURL });
+            
+            // Clean up canvas to free memory
+            canvas.width = 0;
+            canvas.height = 0;
+            
+          } catch (err) {
+            hasError = true;
+            errorMsg.textContent = `Error processing ${f.name}: ${err.message}`;
+          }
+          processed++;
+          if (processed === total) {
+            updateButtons();
+            if (!hasError && convertedResults.length > 0) {
+              convertBtn.innerHTML = '<i class="fa-solid fa-check"></i> DONE';
+              setTimeout(() => {
+                convertBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> CONVERT';
+              }, 1500);
+            }
+          }
+        };
+        img.onerror = function() {
+          hasError = true;
+          errorMsg.textContent = `Failed to load image: ${f.name}. The file may be corrupted.`;
+          processed++;
+          if (processed === total) {
+            updateButtons();
+          }
+        };
+        img.src = f.dataURL;
+      });
+    });
+
+    // ============================================================
+    // ✅ FIX 9: Save All with ZIP & error handling
+    // ============================================================
+    saveAllBtn.addEventListener('click', function() {
+      if (convertedResults.length === 0) return;
+
+      // Single file: direct download
+      if (convertedResults.length === 1) {
+        const result = convertedResults[0];
+        const a = document.createElement('a');
+        a.href = result.dataURL;
+        a.download = result.name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        return;
+      }
+
+      // Multiple files: ZIP
+      try {
+        const zip = new JSZip();
+        const folder = zip.folder('converted_images');
+
+        convertedResults.forEach((result) => {
+          const base64 = result.dataURL.split(',')[1];
+          if (base64) {
+            folder.file(result.name, base64, { base64: true });
+          }
+        });
+
+        zip.generateAsync({ type: 'blob' })
+          .then(function(blob) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted_images.zip';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          })
+          .catch(function(err) {
+            errorMsg.textContent = 'Failed to create ZIP: ' + err.message;
+          });
+      } catch (err) {
+        errorMsg.textContent = 'ZIP generation error: ' + err.message;
+      }
+    });
+
+    // ============================================================
+    // ✅ FIX 10: Tab switching with proper cleanup
+    // ============================================================
+    function switchMode(mode) {
+      if (currentMode === mode) return;
+      currentMode = mode;
+      
+      // Update tab UI
+      if (mode === 'png-to-jpg') {
+        tabPng.className = 'tab-item active';
+        tabPng.setAttribute('aria-selected', 'true');
+        tabJpg.className = 'tab-item';
+        tabJpg.setAttribute('aria-selected', 'false');
+      } else {
+        tabJpg.className = 'tab-item active';
+        tabJpg.setAttribute('aria-selected', 'true');
+        tabPng.className = 'tab-item';
+        tabPng.setAttribute('aria-selected', 'false');
+      }
+      
+      updateAccept();
+      clearAll();
+    }
+
+    tabPng.addEventListener('click', () => switchMode('png-to-jpg'));
+    tabJpg.addEventListener('click', () => switchMode('jpg-to-png'));
+
+    // ============================================================
+    // ✅ FIX 11: Keyboard support for tabs (ARIA)
+    // ============================================================
+    const tabs = [tabPng, tabJpg];
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = (index + 1) % tabs.length;
+          tabs[next].focus();
+          tabs[next].click();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = (index - 1 + tabs.length) % tabs.length;
+          tabs[prev].focus();
+          tabs[prev].click();
+        }
+      });
+      tab.setAttribute('tabindex', '0');
+    });
+
+    // ============================================================
+    // ✅ FIX 12: Initial render
+    // ============================================================
+    renderPreviews();
+    updateButtons();
+
+    // ============================================================
+    // ✅ FIX 13: Cleanup on page unload (prevent memory leaks)
+    // ============================================================
+    window.addEventListener('beforeunload', function() {
+      files.forEach(f => {
+        if (f.dataURL && f.dataURL.startsWith('blob:')) {
+          URL.revokeObjectURL(f.dataURL);
+        }
+      });
+    });
+
+  })();
 </script>
-
 </body>
 </html>
