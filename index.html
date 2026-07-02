@@ -4,35 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pro Toolss · Image Converter</title>
-  
+
   <!-- ✅ SEO: Meta tags -->
   <meta name="description" content="Free PNG to JPG and JPG to PNG converter. Convert images instantly in your browser." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://www.protoolss.online/image-converter" />
   <meta name="theme-color" content="#007BFF" />
-  
+
   <!-- ✅ Open Graph tags -->
   <meta property="og:title" content="Pro Toolss · Image Converter" />
   <meta property="og:description" content="Free PNG to JPG and JPG to PNG converter. Convert images instantly in your browser." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.protoolss.online/image-converter" />
   <meta property="og:image" content="https://www.protoolss.online/og-image.png" />
-  
-  <link rel="icon" type="image/png" href="Pro.png" />
-  
-  <!-- ✅ Font Awesome 6.5.1 (fixed) -->
+
+  <link rel="icon" type="image/png" href="https://i.ibb.co/FkJPMZ8r/Chat-GPT-Image-Jun-18-2026-07-58-22-AM.png" />
+
+  <!-- ✅ Font Awesome 6.5.1 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
-  <!-- Google Font Inter -->
+
+  <!-- Google Fonts: Poppins & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
   <!-- JSZip for Save All -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  
+
   <style>
-    * { box-sizing: border-box; }
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background: #f1f5f9;
@@ -40,79 +47,214 @@
       display: flex;
       flex-direction: column;
       margin: 0;
-      padding-bottom: 76px;
+      padding-top: 80px;
+      /* space for fixed navbar */
+      overflow-x: hidden;
     }
 
-    /* ---------- NAV (Pro Toolss) ---------- */
-    .new-nav {
+    /* ============================================================
+       UNIFIED NAVBAR (from Age Calculator)
+    ============================================================ */
+    nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 50;
-      background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(6px);
-      padding: 0.6rem 1.8rem;
+      z-index: 999;
+      padding: 14px 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      box-shadow: 0 1px 20px rgba(0, 0, 0, 0.03);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      font-family: 'Poppins', sans-serif;
+    }
+    nav.scrolled {
+      padding: 10px 0;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 2px 30px rgba(0, 0, 0, 0.06);
+    }
+    .nav-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      flex-wrap: nowrap;
     }
-    .logo-blue { color: #007BFF; font-weight: 800; font-size: 1.9rem; letter-spacing: -0.5px; }
-    .logo-orange { color: #FF6F00; font-weight: 800; font-size: 1.9rem; letter-spacing: -0.5px; }
-
-    /* Flex utilities */
-    .flex { display: flex; }
-    .items-center { align-items: center; }
-
-    /* ---------- 3‑LINE MENU BUTTON ---------- */
-    .menu-btn {
-      width: 48px;
-      height: 48px;
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+      justify-content: space-between;
+    }
+    .hamburger {
+      display: block !important;
+      font-size: 1.6rem;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 6px 8px;
       background: transparent;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
+      line-height: 1;
+      flex-shrink: 0;
+      order: 2;
+      margin-left: auto;
+    }
+    .hamburger:hover {
+      color: #cc0000;
+      background: rgba(204, 0, 0, 0.06);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 5px;
-      cursor: pointer;
-      transition: 0.2s;
-      padding: 0;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      flex-shrink: 1;
+      min-width: 0;
+      margin-right: auto;
     }
-    .menu-btn span {
-      display: block;
-      width: 28px;
-      height: 3.5px;
-      background: #0f172a;
-      border-radius: 4px;
-      transition: 0.2s;
+    .logo .pro {
+      color: #cc0000;
     }
-    .menu-btn:hover { background: rgba(0, 123, 255, 0.06); }
-    .menu-btn:hover span { background: #007BFF; }
-    .menu-btn:active { transform: scale(0.92); }
+    .logo .toolss {
+      color: #1a2a6c;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .nav-center {
+      display: none !important;
+    }
+    .nav-links {
+      display: none !important;
+    }
+    .nav-links-mobile {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      gap: 0.6rem;
+      padding: 16px 20px 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      margin-top: 10px;
+      background: rgba(255, 255, 255, 0.98);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      border-radius: 0 0 16px 16px;
+    }
+    .nav-links-mobile.show {
+      display: flex;
+    }
+    .nav-links-mobile a {
+      padding: 8px 0;
+      font-size: 0.95rem;
+      width: 100%;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      white-space: normal;
+      color: #444;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.3s;
+    }
+    .nav-links-mobile a:last-child {
+      border-bottom: none;
+    }
+    .nav-links-mobile a i {
+      width: 24px;
+      text-align: center;
+      flex-shrink: 0;
+      color: #cc0000;
+    }
+    .nav-links-mobile a.active {
+      color: #cc0000;
+    }
+    .nav-links-mobile a:hover {
+      color: #cc0000;
+      padding-left: 8px;
+    }
 
-    /* main container */
+    /* ============================================================
+       UNIFIED FOOTER (from Age Calculator)
+    ============================================================ */
+    footer {
+      margin-top: 60px;
+      padding: 30px 0;
+      background: linear-gradient(145deg, #1a1a2e, #16213e);
+      color: #e0e0e0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: 'Poppins', sans-serif;
+      flex-shrink: 0;
+      width: 100%;
+    }
+    .footer-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .footer-powered {
+      font-size: 1rem;
+      color: #aaaaaa;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+    .footer-powered a {
+      color: #ff6b6b;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .footer-powered a:hover {
+      color: #ff4444;
+      text-decoration: underline;
+    }
+    .footer-powered i {
+      color: #ff6b6b;
+      margin: 0 6px;
+    }
+
+    /* ============================================================
+       IMAGE CONVERTER CUSTOM STYLES
+    ============================================================ */
     .main {
       max-width: 640px;
       margin: 0 auto;
-      padding: 100px 16px 24px;
+      padding: 24px 16px 24px;
       flex: 1 0 auto;
       width: 100%;
     }
 
-    /* ---------- CONVERTER CARD ---------- */
     .converter-card {
       background: white;
       border-radius: 24px;
       padding: 28px 24px 32px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02);
       margin-bottom: 24px;
       border: 1px solid #f0f2f5;
     }
 
-    /* ---------- TAB HEADER ---------- */
+    /* Tabs */
     .tab-header {
       display: flex;
       align-items: center;
@@ -151,7 +293,7 @@
     .tab-item.active {
       background: white;
       color: #007BFF;
-      box-shadow: 0 4px 16px rgba(0, 123, 255, 0.12), 0 1px 4px rgba(0,0,0,0.02);
+      box-shadow: 0 4px 16px rgba(0, 123, 255, 0.12), 0 1px 4px rgba(0, 0, 0, 0.02);
       transform: scale(1.02);
     }
     .tab-item.active i {
@@ -160,7 +302,7 @@
     }
     .tab-item:hover:not(.active) {
       color: #475569;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.5);
     }
     .tab-item:hover:not(.active) i {
       opacity: 0.8;
@@ -203,7 +345,9 @@
       background: #f8faff;
       color: #007BFF;
     }
-    .btn-outline i { font-size: 1rem; }
+    .btn-outline i {
+      font-size: 1rem;
+    }
     .btn-clear {
       border-color: #fee2e2;
       color: #ef4444;
@@ -283,9 +427,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     }
-    .preview-item .remove i { font-size: 12px; color: white; }
+    .preview-item .remove i {
+      font-size: 12px;
+      color: white;
+    }
 
     .empty-preview {
       color: #94a3b8;
@@ -335,12 +482,12 @@
       box-shadow: 0 14px 32px rgba(5, 150, 105, 0.30);
     }
 
-    /* ---------- ABOUT SECTION ---------- */
+    /* About Section */
     .about-card {
       background: white;
       border-radius: 24px;
       padding: 28px 24px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.02);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.02);
       border: 1px solid #f0f2f5;
       margin-top: 8px;
     }
@@ -353,7 +500,9 @@
       gap: 10px;
       margin-bottom: 14px;
     }
-    .about-card h3 i { color: #007BFF; }
+    .about-card h3 i {
+      color: #007BFF;
+    }
     .about-card p {
       color: #475569;
       line-height: 1.7;
@@ -392,583 +541,732 @@
       width: 18px;
     }
 
-    /* ---------- FOOTER ---------- */
-    footer.fixed-footer {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 70px;
-      background: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 30;
-      padding: 0 16px;
-      box-shadow: 0 -4px 16px rgba(2,6,23,0.08);
+    .hidden {
+      display: none !important;
     }
-    .design-footer {
-      color: #94a3b8;
-      font-size: 1rem;
-      font-weight: 400;
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 8px;
     }
-    .design-footer .yellow-link {
-      color: #fbbf24;
-      font-weight: 700;
-      text-decoration: none;
-      margin-left: 4px;
-    }
-    .design-footer .yellow-link:hover { text-decoration: underline; }
 
-    .hidden { display: none !important; }
-    .error-msg { color: #ef4444; font-size: 0.85rem; margin-top: 8px; }
-
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 68px;
+      }
+      nav {
+        padding: 10px 0;
+      }
+      .nav-container {
+        padding: 0 14px;
+      }
+      .nav-left {
+        gap: 8px;
+      }
+      .hamburger {
+        font-size: 1.5rem;
+        padding: 4px 6px;
+      }
+      .logo {
+        font-size: 1.2rem;
+        gap: 6px;
+      }
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+      }
+      .nav-links-mobile {
+        padding: 12px 16px 10px;
+        gap: 0.4rem;
+      }
+      .nav-links-mobile a {
+        font-size: 0.85rem;
+        padding: 6px 0;
+      }
+      .nav-links-mobile a i {
+        width: 20px;
+        font-size: 0.8rem;
+      }
+      footer {
+        padding: 20px 0;
+      }
+      .footer-powered {
+        font-size: 0.9rem;
+      }
+      .converter-card {
+        padding: 20px 16px;
+      }
+      .tab-item {
+        font-size: 0.9rem;
+        padding: 10px 8px;
+      }
+      .tab-item i {
+        font-size: 0.85rem;
+      }
+      .btn-outline {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+      }
+      .action-row {
+        flex-direction: column;
+      }
+      .preview-item {
+        width: 80px;
+        height: 80px;
+      }
+      .about-card {
+        padding: 20px 16px;
+      }
+      .about-card .feature-list {
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
     @media (max-width: 480px) {
-      .new-nav { padding: 0.4rem 1rem; }
-      .logo-blue, .logo-orange { font-size: 1.5rem; }
-      .menu-btn { width: 42px; height: 42px; }
-      .menu-btn span { width: 24px; height: 3px; }
-      .converter-card { padding: 20px 16px; }
-      .tab-item { font-size: 0.9rem; padding: 10px 8px; }
-      .tab-item i { font-size: 0.85rem; }
-      .btn-outline { padding: 8px 14px; font-size: 0.85rem; }
-      .action-row { flex-direction: column; }
-      .preview-item { width: 80px; height: 80px; }
-      .about-card { padding: 20px 16px; }
-      .about-card .feature-list { flex-direction: column; gap: 4px; }
+      body {
+        padding-top: 62px;
+      }
+      nav {
+        padding: 8px 0;
+      }
+      .nav-container {
+        padding: 0 12px;
+      }
+      .nav-left {
+        gap: 6px;
+      }
+      .hamburger {
+        font-size: 1.3rem;
+        padding: 3px 5px;
+      }
+      .logo {
+        font-size: 1rem;
+        gap: 4px;
+      }
+      .logo-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .nav-links-mobile {
+        padding: 12px 16px 10px;
+        gap: 0.4rem;
+      }
+      .nav-links-mobile a {
+        font-size: 0.85rem;
+        padding: 6px 0;
+      }
+      .nav-links-mobile a i {
+        width: 20px;
+        font-size: 0.8rem;
+      }
+      .footer-powered {
+        font-size: 0.8rem;
+      }
+    }
+    @media (min-width: 769px) {
+      .nav-left {
+        flex: 1;
+        justify-content: space-between;
+      }
+      .hamburger {
+        display: block !important;
+        font-size: 1.8rem;
+        padding: 8px 12px;
+      }
+      .nav-links-mobile {
+        max-width: 300px;
+        right: 0;
+        left: auto;
+        border-radius: 0 0 16px 16px;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- ✅ NAVBAR -->
-<nav class="new-nav">
-  <div class="flex items-center">
-    <span class="logo-blue">Pro</span>
-    <span class="logo-orange">Toolss</span>
-  </div>
-  <!-- ✅ Security: menu button with safe navigation -->
-  <button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" title="Open menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+  <!-- ============================================================
+       UNIFIED NAVBAR
+  ============================================================ -->
+  <nav id="mainNav">
+    <div class="nav-container">
+      <div class="nav-left">
+        <a href="https://www.protoolss.online" class="logo">
+          <img src="https://i.ibb.co/FkJPMZ8r/Chat-GPT-Image-Jun-18-2026-07-58-22-AM.png" alt="Pro Toolss Logo" class="logo-icon" />
+          <span class="pro">Pro</span><span class="toolss">Toolss</span>
+        </a>
+        <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      <div class="nav-center" style="display:none !important;"></div>
+      <div class="nav-links-mobile" id="navLinksMobile">
+        <a href="https://www.protoolss.online" class="active"><i class="fas fa-home"></i> Home</a>
+      </div>
+    </div>
+  </nav>
 
-<!-- MAIN -->
-<div class="main">
+  <!-- ============================================================
+       MAIN CONTENT (Image Converter)
+  ============================================================ -->
+  <main class="main">
 
-  <!-- CONVERTER CARD -->
-  <div class="converter-card">
+    <!-- CONVERTER CARD -->
+    <div class="converter-card">
 
-    <!-- TAB HEADER -->
-    <div class="tab-header" role="tablist">
-      <button type="button" class="tab-item active" id="tabPngToJpg" role="tab" aria-selected="true" aria-label="Convert PNG to JPG">
-        <i class="fa-regular fa-file-image"></i>
-        PNG to JPG
-        <span class="arrow-icon"><i class="fa-solid fa-arrow-right"></i></span>
-      </button>
-      <button type="button" class="tab-item" id="tabJpgToPng" role="tab" aria-selected="false" aria-label="Convert JPG to PNG">
-        <i class="fa-regular fa-image"></i>
-        JPG to PNG
-        <span class="arrow-icon"><i class="fa-solid fa-arrow-right"></i></span>
-      </button>
+      <!-- TAB HEADER -->
+      <div class="tab-header" role="tablist">
+        <button type="button" class="tab-item active" id="tabPngToJpg" role="tab" aria-selected="true" aria-label="Convert PNG to JPG">
+          <i class="fa-regular fa-file-image"></i>
+          PNG to JPG
+          <span class="arrow-icon"><i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+        <button type="button" class="tab-item" id="tabJpgToPng" role="tab" aria-selected="false" aria-label="Convert JPG to PNG">
+          <i class="fa-regular fa-image"></i>
+          JPG to PNG
+          <span class="arrow-icon"><i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <button type="button" class="btn-outline" id="selectFilesBtn" aria-label="Select files">
+          <i class="fa-regular fa-folder-open"></i> SELECT FILES
+        </button>
+        <button type="button" class="btn-outline btn-clear" id="clearBtn" aria-label="Clear all files">
+          <i class="fa-regular fa-trash-can"></i> CLEAR
+        </button>
+      </div>
+
+      <!-- Drop zone -->
+      <div class="drop-zone" id="dropZone" role="button" aria-label="Drop files here or click to upload" tabindex="0">
+        <i class="fa-regular fa-cloud-arrow-up"></i>
+        <p>Drop Your Files Here</p>
+      </div>
+
+      <!-- Preview area -->
+      <div class="preview-area" id="previewArea" role="list" aria-label="Uploaded files">
+        <span class="empty-preview">No files selected</span>
+      </div>
+
+      <!-- Error message -->
+      <div id="errorMsg" class="error-msg" role="alert" aria-live="polite"></div>
+
+      <!-- Action row -->
+      <div class="action-row">
+        <button type="button" class="btn-primary" id="convertBtn" disabled aria-label="Convert images">
+          <i class="fa-solid fa-arrows-rotate"></i> CONVERT
+        </button>
+        <button type="button" class="btn-primary btn-success" id="saveAllBtn" disabled aria-label="Save all converted images">
+          <i class="fa-regular fa-floppy-disk"></i> SAVE ALL
+        </button>
+      </div>
     </div>
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <button type="button" class="btn-outline" id="selectFilesBtn" aria-label="Select files">
-        <i class="fa-regular fa-folder-open"></i> SELECT FILES
-      </button>
-      <button type="button" class="btn-outline btn-clear" id="clearBtn" aria-label="Clear all files">
-        <i class="fa-regular fa-trash-can"></i> CLEAR
-      </button>
+    <!-- ABOUT SECTION -->
+    <div class="about-card">
+      <h3><i class="fa-regular fa-circle-info"></i> About This Tool</h3>
+      <p>
+        <span class="badge">FREE</span>
+        <span class="badge">No upload</span>
+        <span class="badge">Private</span>
+        <span class="badge">Fast</span>
+      </p>
+      <p>
+        <strong>Pro Toolss Image Converter</strong> is a powerful, browser-based utility that lets you convert
+        images between <strong>PNG</strong> and <strong>JPG</strong> formats instantly.
+        Whether you're a designer, developer, or casual user, this tool makes image conversion
+        quick and hassle-free.
+      </p>
+      <p>
+        All processing happens <strong>entirely in your browser</strong> using HTML5 Canvas —
+        your files are never uploaded to any server. This means your images remain
+        <strong>100% private and secure</strong>. No data is stored, shared, or tracked.
+      </p>
+      <p>
+        <strong>Note:</strong> When converting PNG to JPG, the background will be filled with white
+        because JPG format does not support transparency.
+      </p>
+      <p>
+        The tool supports <strong>batch conversion</strong>, so you can convert multiple images at once.
+        After conversion, you can download each file individually or use the <strong>"Save All"</strong>
+        button to download all converted images as a single ZIP file.
+      </p>
+
+      <div class="feature-list">
+        <span><i class="fa-regular fa-image"></i> PNG ↔ JPG conversion</span>
+        <span><i class="fa-regular fa-layer-group"></i> Batch processing</span>
+        <span><i class="fa-regular fa-file-zipper"></i> ZIP download</span>
+        <span><i class="fa-regular fa-shield"></i> 100% private</span>
+        <span><i class="fa-regular fa-clock"></i> Instant processing</span>
+        <span><i class="fa-regular fa-globe"></i> No server upload</span>
+      </div>
     </div>
 
-    <!-- Drop zone -->
-    <div class="drop-zone" id="dropZone" role="button" aria-label="Drop files here or click to upload" tabindex="0">
-      <i class="fa-regular fa-cloud-arrow-up"></i>
-      <p>Drop Your Files Here</p>
+  </main>
+
+  <!-- ============================================================
+       UNIFIED FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-powered">
+        <i class=""></i> Powered by
+        <a href="https://www.protoolss.online" target="_blank" rel="noopener noreferrer">www.protoolss.online</a>
+        <i class="" style="color: #ff6b6b;"></i>
+      </div>
     </div>
+  </footer>
 
-    <!-- Preview area -->
-    <div class="preview-area" id="previewArea" role="list" aria-label="Uploaded files">
-      <span class="empty-preview">No files selected</span>
-    </div>
-
-    <!-- Error message -->
-    <div id="errorMsg" class="error-msg" role="alert" aria-live="polite"></div>
-
-    <!-- Action row -->
-    <div class="action-row">
-      <button type="button" class="btn-primary" id="convertBtn" disabled aria-label="Convert images">
-        <i class="fa-solid fa-arrows-rotate"></i> CONVERT
-      </button>
-      <button type="button" class="btn-primary btn-success" id="saveAllBtn" disabled aria-label="Save all converted images">
-        <i class="fa-regular fa-floppy-disk"></i> SAVE ALL
-      </button>
-    </div>
-  </div>
-
-  <!-- ABOUT SECTION -->
-  <div class="about-card">
-    <h3><i class="fa-regular fa-circle-info"></i> About This Tool</h3>
-    <p>
-      <span class="badge">FREE</span>
-      <span class="badge">No upload</span>
-      <span class="badge">Private</span>
-      <span class="badge">Fast</span>
-    </p>
-    <p>
-      <strong>Pro Toolss Image Converter</strong> is a powerful, browser-based utility that lets you convert 
-      images between <strong>PNG</strong> and <strong>JPG</strong> formats instantly. 
-      Whether you're a designer, developer, or casual user, this tool makes image conversion 
-      quick and hassle-free.
-    </p>
-    <p>
-      All processing happens <strong>entirely in your browser</strong> using HTML5 Canvas — 
-      your files are never uploaded to any server. This means your images remain 
-      <strong>100% private and secure</strong>. No data is stored, shared, or tracked.
-    </p>
-    <p>
-      <strong>Note:</strong> When converting PNG to JPG, the background will be filled with white 
-      because JPG format does not support transparency.
-    </p>
-    <p>
-      The tool supports <strong>batch conversion</strong>, so you can convert multiple images at once. 
-      After conversion, you can download each file individually or use the <strong>"Save All"</strong> 
-      button to download all converted images as a single ZIP file.
-    </p>
-    
-    <div class="feature-list">
-      <span><i class="fa-regular fa-image"></i> PNG ↔ JPG conversion</span>
-      <span><i class="fa-regular fa-layer-group"></i> Batch processing</span>
-      <span><i class="fa-regular fa-file-zipper"></i> ZIP download</span>
-      <span><i class="fa-regular fa-shield"></i> 100% private</span>
-      <span><i class="fa-regular fa-clock"></i> Instant processing</span>
-      <span><i class="fa-regular fa-globe"></i> No server upload</span>
-    </div>
-  </div>
-
-</div>
-
-<!-- ✅ FOOTER with security attributes -->
-<footer class="fixed-footer">
-  <div class="design-footer">
-    Design by <a href="https://www.protoolss.online/" target="_blank" rel="noopener noreferrer" class="yellow-link">Pro Toolss</a>
-  </div>
-</footer>
-
-<script>
-  (function() {
-    'use strict';
-
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script>
     // ============================================================
-    // ✅ FIX 1: Security - Safe window.open with noopener
+    // UNIFIED NAVBAR SCRIPTS (Hamburger, scroll)
     // ============================================================
-    const menuBtn = document.getElementById('menuBtn');
-    menuBtn.addEventListener('click', function() {
-      window.open('https://www.protoolss.online/', '_blank', 'noopener,noreferrer');
-    });
-
-    // ============================================================
-    // ✅ FIX 2: State management
-    // ============================================================
-    let currentMode = 'png-to-jpg'; // 'png-to-jpg' or 'jpg-to-png'
-    let files = []; // Array of { id, name, dataURL, file, size }
-    let convertedResults = []; // Array of { name, dataURL }
-    let fileIdCounter = 0;
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-
-    // DOM refs
-    const dropZone = document.getElementById('dropZone');
-    const previewArea = document.getElementById('previewArea');
-    const selectBtn = document.getElementById('selectFilesBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const convertBtn = document.getElementById('convertBtn');
-    const saveAllBtn = document.getElementById('saveAllBtn');
-    const tabPng = document.getElementById('tabPngToJpg');
-    const tabJpg = document.getElementById('tabJpgToPng');
-    const errorMsg = document.getElementById('errorMsg');
-
-    // Hidden file input
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.multiple = true;
-    fileInput.style.display = 'none';
-    document.body.appendChild(fileInput);
-
-    // ============================================================
-    // ✅ FIX 3: Update file accept based on mode
-    // ============================================================
-    function updateAccept() {
-      fileInput.accept = currentMode === 'png-to-jpg' ? '.png,image/png' : '.jpg,.jpeg,image/jpeg';
-    }
-    updateAccept();
-
-    // ============================================================
-    // ✅ FIX 4: Render previews with lazy loading
-    // ============================================================
-    function renderPreviews() {
-      previewArea.innerHTML = '';
-      if (files.length === 0) {
-        previewArea.innerHTML = '<span class="empty-preview">No files selected</span>';
-        updateButtons();
-        return;
-      }
-      files.forEach((f) => {
-        const div = document.createElement('div');
-        div.className = 'preview-item';
-        div.setAttribute('role', 'listitem');
-        div.innerHTML = `
-          <img src="${f.dataURL}" alt="${f.name}" loading="lazy" />
-          <button type="button" class="remove" data-id="${f.id}" aria-label="Remove ${f.name}">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        `;
-        previewArea.appendChild(div);
+    (function() {
+      const nav = document.getElementById('mainNav');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
       });
-      
-      // Remove events
-      document.querySelectorAll('.preview-item .remove').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const id = parseInt(this.dataset.id);
-          removeFileById(id);
+
+      const hamburger = document.getElementById('hamburgerBtn');
+      const navLinksMobile = document.getElementById('navLinksMobile');
+
+      hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        navLinksMobile.classList.toggle('show');
+        const icon = this.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+      });
+
+      document.querySelectorAll('#navLinksMobile a').forEach(link => {
+        link.addEventListener('click', function() {
+          navLinksMobile.classList.remove('show');
+          const icon = hamburger.querySelector('i');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
         });
       });
-      updateButtons();
-    }
 
-    function removeFileById(id) {
-      files = files.filter(f => f.id !== id);
-      convertedResults = [];
-      renderPreviews();
-      updateButtons();
-      errorMsg.textContent = '';
-    }
-
-    function updateButtons() {
-      convertBtn.disabled = files.length === 0;
-      saveAllBtn.disabled = convertedResults.length === 0;
-    }
-
-    function clearAll() {
-      // Release object URLs to prevent memory leaks
-      files.forEach(f => {
-        if (f.dataURL && f.dataURL.startsWith('blob:')) {
-          URL.revokeObjectURL(f.dataURL);
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('nav') && navLinksMobile.classList.contains('show')) {
+          navLinksMobile.classList.remove('show');
+          const icon = hamburger.querySelector('i');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
         }
       });
-      files = [];
-      convertedResults = [];
-      renderPreviews();
-      updateButtons();
-      errorMsg.textContent = '';
-    }
+    })();
 
     // ============================================================
-    // ✅ FIX 5: Load files with validation (type, size, duplicates)
+    // IMAGE CONVERTER LOGIC (unchanged)
     // ============================================================
-    function loadFiles(fileList) {
-      errorMsg.textContent = '';
-      const validType = currentMode === 'png-to-jpg' ? 'image/png' : 'image/jpeg';
-      const validFiles = [];
-      const existingNames = new Set(files.map(f => f.name));
+    (function() {
+      'use strict';
 
-      for (const f of fileList) {
-        // ✅ Check file type
-        if (f.type !== validType) {
-          const ext = currentMode === 'png-to-jpg' ? 'PNG' : 'JPG/JPEG';
-          errorMsg.textContent = `Only ${ext} files are allowed in this mode.`;
-          continue;
-        }
+      // ============================================================
+      // State management
+      // ============================================================
+      let currentMode = 'png-to-jpg'; // 'png-to-jpg' or 'jpg-to-png'
+      let files = []; // Array of { id, name, dataURL, file, size }
+      let convertedResults = []; // Array of { name, dataURL }
+      let fileIdCounter = 0;
+      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-        // ✅ Check file size (max 10MB)
-        if (f.size > MAX_FILE_SIZE) {
-          errorMsg.textContent = `File "${f.name}" exceeds 10MB limit.`;
-          continue;
-        }
+      // DOM refs
+      const dropZone = document.getElementById('dropZone');
+      const previewArea = document.getElementById('previewArea');
+      const selectBtn = document.getElementById('selectFilesBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const convertBtn = document.getElementById('convertBtn');
+      const saveAllBtn = document.getElementById('saveAllBtn');
+      const tabPng = document.getElementById('tabPngToJpg');
+      const tabJpg = document.getElementById('tabJpgToPng');
+      const errorMsg = document.getElementById('errorMsg');
 
-        // ✅ Prevent duplicate uploads
-        if (existingNames.has(f.name)) {
-          errorMsg.textContent = `"${f.name}" is already uploaded.`;
-          continue;
-        }
+      // Hidden file input
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.multiple = true;
+      fileInput.style.display = 'none';
+      document.body.appendChild(fileInput);
 
-        validFiles.push(f);
-        existingNames.add(f.name);
+      // ============================================================
+      // Update file accept based on mode
+      // ============================================================
+      function updateAccept() {
+        fileInput.accept = currentMode === 'png-to-jpg' ? '.png,image/png' : '.jpg,.jpeg,image/jpeg';
       }
-
-      if (validFiles.length === 0) {
-        if (!errorMsg.textContent) {
-          errorMsg.textContent = `Please upload ${currentMode === 'png-to-jpg' ? 'PNG' : 'JPG/JPEG'} files.`;
-        }
-        return;
-      }
-
-      let loaded = 0;
-      validFiles.forEach((f) => {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const dataURL = e.target.result;
-          files.push({
-            id: fileIdCounter++,
-            name: f.name,
-            dataURL: dataURL,
-            file: f,
-            size: f.size
-          });
-          loaded++;
-          if (loaded === validFiles.length) {
-            renderPreviews();
-          }
-        };
-        reader.onerror = function() {
-          errorMsg.textContent = `Failed to read file: ${f.name}`;
-          loaded++;
-          if (loaded === validFiles.length) {
-            renderPreviews();
-          }
-        };
-        reader.readAsDataURL(f);
-      });
-    }
-
-    // ============================================================
-    // ✅ FIX 6: Drag-and-drop with validation
-    // ============================================================
-    dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', function(e) {
-      if (this.files.length) {
-        loadFiles(this.files);
-        this.value = '';
-      }
-    });
-
-    // Keyboard accessibility for drop zone
-    dropZone.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        fileInput.click();
-      }
-    });
-
-    dropZone.addEventListener('dragover', (e) => { 
-      e.preventDefault(); 
-      dropZone.style.borderColor = '#007BFF'; 
-    });
-    dropZone.addEventListener('dragleave', () => { 
-      dropZone.style.borderColor = '#d1d5f0'; 
-    });
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.style.borderColor = '#d1d5f0';
-      if (e.dataTransfer.files.length) {
-        loadFiles(e.dataTransfer.files);
-      }
-    });
-
-    // ============================================================
-    // ✅ FIX 7: Button events
-    // ============================================================
-    selectBtn.addEventListener('click', () => fileInput.click());
-    clearBtn.addEventListener('click', clearAll);
-
-    // ============================================================
-    // ✅ FIX 8: Convert with error handling & memory optimization
-    // ============================================================
-    convertBtn.addEventListener('click', function() {
-      if (files.length === 0) return;
-      convertedResults = [];
-      let processed = 0;
-      const total = files.length;
-      let hasError = false;
-
-      files.forEach((f) => {
-        // ✅ Use Image constructor with onload/onerror
-        const img = new Image();
-        img.onload = function() {
-          try {
-            // Limit canvas size to prevent browser freezing
-            let width = img.width;
-            let height = img.height;
-            const MAX_DIMENSION = 4096;
-            if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
-              const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
-              width = Math.floor(width * ratio);
-              height = Math.floor(height * ratio);
-            }
-
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-
-            let resultName = f.name;
-            let mimeType = 'image/png';
-
-            if (currentMode === 'png-to-jpg') {
-              // PNG → JPG: white background (transparency not supported)
-              ctx.fillStyle = '#ffffff';
-              ctx.fillRect(0, 0, width, height);
-              ctx.drawImage(img, 0, 0, width, height);
-              resultName = f.name.replace(/\.[^.]+$/, '') + '.jpg';
-              mimeType = 'image/jpeg';
-            } else {
-              // JPG → PNG: preserve transparency
-              ctx.drawImage(img, 0, 0, width, height);
-              resultName = f.name.replace(/\.[^.]+$/, '') + '.png';
-              mimeType = 'image/png';
-            }
-
-            const dataURL = canvas.toDataURL(mimeType, 0.92);
-            convertedResults.push({ name: resultName, dataURL });
-            
-            // Clean up canvas to free memory
-            canvas.width = 0;
-            canvas.height = 0;
-            
-          } catch (err) {
-            hasError = true;
-            errorMsg.textContent = `Error processing ${f.name}: ${err.message}`;
-          }
-          processed++;
-          if (processed === total) {
-            updateButtons();
-            if (!hasError && convertedResults.length > 0) {
-              convertBtn.innerHTML = '<i class="fa-solid fa-check"></i> DONE';
-              setTimeout(() => {
-                convertBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> CONVERT';
-              }, 1500);
-            }
-          }
-        };
-        img.onerror = function() {
-          hasError = true;
-          errorMsg.textContent = `Failed to load image: ${f.name}. The file may be corrupted.`;
-          processed++;
-          if (processed === total) {
-            updateButtons();
-          }
-        };
-        img.src = f.dataURL;
-      });
-    });
-
-    // ============================================================
-    // ✅ FIX 9: Save All with ZIP & error handling
-    // ============================================================
-    saveAllBtn.addEventListener('click', function() {
-      if (convertedResults.length === 0) return;
-
-      // Single file: direct download
-      if (convertedResults.length === 1) {
-        const result = convertedResults[0];
-        const a = document.createElement('a');
-        a.href = result.dataURL;
-        a.download = result.name;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        return;
-      }
-
-      // Multiple files: ZIP
-      try {
-        const zip = new JSZip();
-        const folder = zip.folder('converted_images');
-
-        convertedResults.forEach((result) => {
-          const base64 = result.dataURL.split(',')[1];
-          if (base64) {
-            folder.file(result.name, base64, { base64: true });
-          }
-        });
-
-        zip.generateAsync({ type: 'blob' })
-          .then(function(blob) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'converted_images.zip';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
-          })
-          .catch(function(err) {
-            errorMsg.textContent = 'Failed to create ZIP: ' + err.message;
-          });
-      } catch (err) {
-        errorMsg.textContent = 'ZIP generation error: ' + err.message;
-      }
-    });
-
-    // ============================================================
-    // ✅ FIX 10: Tab switching with proper cleanup
-    // ============================================================
-    function switchMode(mode) {
-      if (currentMode === mode) return;
-      currentMode = mode;
-      
-      // Update tab UI
-      if (mode === 'png-to-jpg') {
-        tabPng.className = 'tab-item active';
-        tabPng.setAttribute('aria-selected', 'true');
-        tabJpg.className = 'tab-item';
-        tabJpg.setAttribute('aria-selected', 'false');
-      } else {
-        tabJpg.className = 'tab-item active';
-        tabJpg.setAttribute('aria-selected', 'true');
-        tabPng.className = 'tab-item';
-        tabPng.setAttribute('aria-selected', 'false');
-      }
-      
       updateAccept();
-      clearAll();
-    }
 
-    tabPng.addEventListener('click', () => switchMode('png-to-jpg'));
-    tabJpg.addEventListener('click', () => switchMode('jpg-to-png'));
+      // ============================================================
+      // Render previews with lazy loading
+      // ============================================================
+      function renderPreviews() {
+        previewArea.innerHTML = '';
+        if (files.length === 0) {
+          previewArea.innerHTML = '<span class="empty-preview">No files selected</span>';
+          updateButtons();
+          return;
+        }
+        files.forEach((f) => {
+          const div = document.createElement('div');
+          div.className = 'preview-item';
+          div.setAttribute('role', 'listitem');
+          div.innerHTML = `
+            <img src="${f.dataURL}" alt="${f.name}" loading="lazy" />
+            <button type="button" class="remove" data-id="${f.id}" aria-label="Remove ${f.name}">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          `;
+          previewArea.appendChild(div);
+        });
 
-    // ============================================================
-    // ✅ FIX 11: Keyboard support for tabs (ARIA)
-    // ============================================================
-    const tabs = [tabPng, tabJpg];
-    tabs.forEach((tab, index) => {
-      tab.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          const next = (index + 1) % tabs.length;
-          tabs[next].focus();
-          tabs[next].click();
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          const prev = (index - 1 + tabs.length) % tabs.length;
-          tabs[prev].focus();
-          tabs[prev].click();
+        // Remove events
+        document.querySelectorAll('.preview-item .remove').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const id = parseInt(this.dataset.id);
+            removeFileById(id);
+          });
+        });
+        updateButtons();
+      }
+
+      function removeFileById(id) {
+        files = files.filter(f => f.id !== id);
+        convertedResults = [];
+        renderPreviews();
+        updateButtons();
+        errorMsg.textContent = '';
+      }
+
+      function updateButtons() {
+        convertBtn.disabled = files.length === 0;
+        saveAllBtn.disabled = convertedResults.length === 0;
+      }
+
+      function clearAll() {
+        // Release object URLs to prevent memory leaks
+        files.forEach(f => {
+          if (f.dataURL && f.dataURL.startsWith('blob:')) {
+            URL.revokeObjectURL(f.dataURL);
+          }
+        });
+        files = [];
+        convertedResults = [];
+        renderPreviews();
+        updateButtons();
+        errorMsg.textContent = '';
+      }
+
+      // ============================================================
+      // Load files with validation (type, size, duplicates)
+      // ============================================================
+      function loadFiles(fileList) {
+        errorMsg.textContent = '';
+        const validType = currentMode === 'png-to-jpg' ? 'image/png' : 'image/jpeg';
+        const validFiles = [];
+        const existingNames = new Set(files.map(f => f.name));
+
+        for (const f of fileList) {
+          // ✅ Check file type
+          if (f.type !== validType) {
+            const ext = currentMode === 'png-to-jpg' ? 'PNG' : 'JPG/JPEG';
+            errorMsg.textContent = `Only ${ext} files are allowed in this mode.`;
+            continue;
+          }
+
+          // ✅ Check file size (max 10MB)
+          if (f.size > MAX_FILE_SIZE) {
+            errorMsg.textContent = `File "${f.name}" exceeds 10MB limit.`;
+            continue;
+          }
+
+          // ✅ Prevent duplicate uploads
+          if (existingNames.has(f.name)) {
+            errorMsg.textContent = `"${f.name}" is already uploaded.`;
+            continue;
+          }
+
+          validFiles.push(f);
+          existingNames.add(f.name);
+        }
+
+        if (validFiles.length === 0) {
+          if (!errorMsg.textContent) {
+            errorMsg.textContent = `Please upload ${currentMode === 'png-to-jpg' ? 'PNG' : 'JPG/JPEG'} files.`;
+          }
+          return;
+        }
+
+        let loaded = 0;
+        validFiles.forEach((f) => {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const dataURL = e.target.result;
+            files.push({
+              id: fileIdCounter++,
+              name: f.name,
+              dataURL: dataURL,
+              file: f,
+              size: f.size
+            });
+            loaded++;
+            if (loaded === validFiles.length) {
+              renderPreviews();
+            }
+          };
+          reader.onerror = function() {
+            errorMsg.textContent = `Failed to read file: ${f.name}`;
+            loaded++;
+            if (loaded === validFiles.length) {
+              renderPreviews();
+            }
+          };
+          reader.readAsDataURL(f);
+        });
+      }
+
+      // ============================================================
+      // Drag-and-drop with validation
+      // ============================================================
+      dropZone.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', function(e) {
+        if (this.files.length) {
+          loadFiles(this.files);
+          this.value = '';
         }
       });
-      tab.setAttribute('tabindex', '0');
-    });
 
-    // ============================================================
-    // ✅ FIX 12: Initial render
-    // ============================================================
-    renderPreviews();
-    updateButtons();
-
-    // ============================================================
-    // ✅ FIX 13: Cleanup on page unload (prevent memory leaks)
-    // ============================================================
-    window.addEventListener('beforeunload', function() {
-      files.forEach(f => {
-        if (f.dataURL && f.dataURL.startsWith('blob:')) {
-          URL.revokeObjectURL(f.dataURL);
+      // Keyboard accessibility for drop zone
+      dropZone.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          fileInput.click();
         }
       });
-    });
 
-  })();
-</script>
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#007BFF';
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = '#d1d5f0';
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = '#d1d5f0';
+        if (e.dataTransfer.files.length) {
+          loadFiles(e.dataTransfer.files);
+        }
+      });
+
+      // ============================================================
+      // Button events
+      // ============================================================
+      selectBtn.addEventListener('click', () => fileInput.click());
+      clearBtn.addEventListener('click', clearAll);
+
+      // ============================================================
+      // Convert with error handling & memory optimization
+      // ============================================================
+      convertBtn.addEventListener('click', function() {
+        if (files.length === 0) return;
+        convertedResults = [];
+        let processed = 0;
+        const total = files.length;
+        let hasError = false;
+
+        files.forEach((f) => {
+          const img = new Image();
+          img.onload = function() {
+            try {
+              // Limit canvas size to prevent browser freezing
+              let width = img.width;
+              let height = img.height;
+              const MAX_DIMENSION = 4096;
+              if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+                const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
+                width = Math.floor(width * ratio);
+                height = Math.floor(height * ratio);
+              }
+
+              const canvas = document.createElement('canvas');
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+
+              let resultName = f.name;
+              let mimeType = 'image/png';
+
+              if (currentMode === 'png-to-jpg') {
+                // PNG → JPG: white background (transparency not supported)
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, width, height);
+                ctx.drawImage(img, 0, 0, width, height);
+                resultName = f.name.replace(/\.[^.]+$/, '') + '.jpg';
+                mimeType = 'image/jpeg';
+              } else {
+                // JPG → PNG: preserve transparency
+                ctx.drawImage(img, 0, 0, width, height);
+                resultName = f.name.replace(/\.[^.]+$/, '') + '.png';
+                mimeType = 'image/png';
+              }
+
+              const dataURL = canvas.toDataURL(mimeType, 0.92);
+              convertedResults.push({ name: resultName, dataURL });
+
+              // Clean up canvas to free memory
+              canvas.width = 0;
+              canvas.height = 0;
+
+            } catch (err) {
+              hasError = true;
+              errorMsg.textContent = `Error processing ${f.name}: ${err.message}`;
+            }
+            processed++;
+            if (processed === total) {
+              updateButtons();
+              if (!hasError && convertedResults.length > 0) {
+                convertBtn.innerHTML = '<i class="fa-solid fa-check"></i> DONE';
+                setTimeout(() => {
+                  convertBtn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> CONVERT';
+                }, 1500);
+              }
+            }
+          };
+          img.onerror = function() {
+            hasError = true;
+            errorMsg.textContent = `Failed to load image: ${f.name}. The file may be corrupted.`;
+            processed++;
+            if (processed === total) {
+              updateButtons();
+            }
+          };
+          img.src = f.dataURL;
+        });
+      });
+
+      // ============================================================
+      // Save All with ZIP & error handling
+      // ============================================================
+      saveAllBtn.addEventListener('click', function() {
+        if (convertedResults.length === 0) return;
+
+        // Single file: direct download
+        if (convertedResults.length === 1) {
+          const result = convertedResults[0];
+          const a = document.createElement('a');
+          a.href = result.dataURL;
+          a.download = result.name;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          return;
+        }
+
+        // Multiple files: ZIP
+        try {
+          const zip = new JSZip();
+          const folder = zip.folder('converted_images');
+
+          convertedResults.forEach((result) => {
+            const base64 = result.dataURL.split(',')[1];
+            if (base64) {
+              folder.file(result.name, base64, { base64: true });
+            }
+          });
+
+          zip.generateAsync({ type: 'blob' })
+            .then(function(blob) {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'converted_images.zip';
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            })
+            .catch(function(err) {
+              errorMsg.textContent = 'Failed to create ZIP: ' + err.message;
+            });
+        } catch (err) {
+          errorMsg.textContent = 'ZIP generation error: ' + err.message;
+        }
+      });
+
+      // ============================================================
+      // Tab switching with proper cleanup
+      // ============================================================
+      function switchMode(mode) {
+        if (currentMode === mode) return;
+        currentMode = mode;
+
+        // Update tab UI
+        if (mode === 'png-to-jpg') {
+          tabPng.className = 'tab-item active';
+          tabPng.setAttribute('aria-selected', 'true');
+          tabJpg.className = 'tab-item';
+          tabJpg.setAttribute('aria-selected', 'false');
+        } else {
+          tabJpg.className = 'tab-item active';
+          tabJpg.setAttribute('aria-selected', 'true');
+          tabPng.className = 'tab-item';
+          tabPng.setAttribute('aria-selected', 'false');
+        }
+
+        updateAccept();
+        clearAll();
+      }
+
+      tabPng.addEventListener('click', () => switchMode('png-to-jpg'));
+      tabJpg.addEventListener('click', () => switchMode('jpg-to-png'));
+
+      // ============================================================
+      // Keyboard support for tabs (ARIA)
+      // ============================================================
+      const tabs = [tabPng, tabJpg];
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = (index + 1) % tabs.length;
+            tabs[next].focus();
+            tabs[next].click();
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = (index - 1 + tabs.length) % tabs.length;
+            tabs[prev].focus();
+            tabs[prev].click();
+          }
+        });
+        tab.setAttribute('tabindex', '0');
+      });
+
+      // ============================================================
+      // Initial render
+      // ============================================================
+      renderPreviews();
+      updateButtons();
+
+      // ============================================================
+      // Cleanup on page unload (prevent memory leaks)
+      // ============================================================
+      window.addEventListener('beforeunload', function() {
+        files.forEach(f => {
+          if (f.dataURL && f.dataURL.startsWith('blob:')) {
+            URL.revokeObjectURL(f.dataURL);
+          }
+        });
+      });
+
+    })();
+  </script>
 </body>
 </html>
