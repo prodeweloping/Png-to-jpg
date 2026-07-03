@@ -47,13 +47,13 @@
       display: flex;
       flex-direction: column;
       margin: 0;
-      padding-top: 80px;
-      /* space for fixed navbar */
+      padding-top: 80px;  /* space for fixed navbar, overridden per device */
+      padding-bottom: 0;
       overflow-x: hidden;
     }
 
     /* ============================================================
-       UNIFIED NAVBAR (from Age Calculator)
+       UNIFIED NAVBAR (fixed top)
     ============================================================ */
     nav {
       position: fixed;
@@ -69,6 +69,9 @@
       box-shadow: 0 1px 20px rgba(0, 0, 0, 0.03);
       transition: all 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2);
       font-family: 'Poppins', sans-serif;
+      height: 72px;
+      display: flex;
+      align-items: center;
     }
     nav.scrolled {
       padding: 10px 0;
@@ -82,15 +85,14 @@
       max-width: 1280px;
       margin: 0 auto;
       padding: 0 20px;
+      width: 100%;
       position: relative;
-      flex-wrap: nowrap;
     }
     .nav-left {
       display: flex;
       align-items: center;
       gap: 12px;
-      flex: 1;
-      min-width: 0;
+      width: 100%;
       justify-content: space-between;
     }
     .hamburger {
@@ -105,8 +107,6 @@
       border-radius: 8px;
       line-height: 1;
       flex-shrink: 0;
-      order: 2;
-      margin-left: auto;
     }
     .hamburger:hover {
       color: #cc0000;
@@ -122,9 +122,7 @@
       text-decoration: none;
       transition: all 0.3s ease;
       white-space: nowrap;
-      flex-shrink: 1;
-      min-width: 0;
-      margin-right: auto;
+      flex-shrink: 0;
     }
     .logo .pro {
       color: #cc0000;
@@ -139,20 +137,14 @@
       object-fit: cover;
       flex-shrink: 0;
     }
-    .nav-center {
-      display: none !important;
-    }
-    .nav-links {
-      display: none !important;
-    }
     .nav-links-mobile {
       display: none;
       flex-direction: column;
       width: 100%;
-      gap: 0.6rem;
-      padding: 16px 20px 12px;
+      gap: 0.4rem;
+      padding: 14px 20px 12px;
       border-top: 1px solid rgba(0, 0, 0, 0.06);
-      margin-top: 10px;
+      margin-top: 8px;
       background: rgba(255, 255, 255, 0.98);
       position: absolute;
       top: 100%;
@@ -169,7 +161,6 @@
       font-size: 0.95rem;
       width: 100%;
       border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-      white-space: normal;
       color: #444;
       text-decoration: none;
       display: flex;
@@ -195,18 +186,21 @@
     }
 
     /* ============================================================
-       UNIFIED FOOTER (from Age Calculator)
+       UNIFIED FOOTER (fixed bottom on mobile, normal on desktop)
     ============================================================ */
     footer {
-      margin-top: 60px;
-      padding: 30px 0;
+      font-family: 'Poppins', sans-serif;
+      flex-shrink: 0;
+      width: 100%;
       background: linear-gradient(145deg, #1a1a2e, #16213e);
       color: #e0e0e0;
       text-align: center;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
-      font-family: 'Poppins', sans-serif;
-      flex-shrink: 0;
-      width: 100%;
+      z-index: 998;
+      /* default: normal flow */
+      position: relative;
+      padding: 18px 0;
+      margin-top: 40px;
     }
     .footer-content {
       max-width: 1280px;
@@ -235,7 +229,7 @@
     }
 
     /* ============================================================
-       IMAGE CONVERTER CUSTOM STYLES
+       IMAGE CONVERTER CUSTOM STYLES (unchanged)
     ============================================================ */
     .main {
       max-width: 640px;
@@ -550,13 +544,17 @@
       margin-top: 8px;
     }
 
-    /* Responsive */
+    /* ============================================================
+       RESPONSIVE: MOBILE (≤ 768px) – fixed header & footer
+    ============================================================ */
     @media (max-width: 768px) {
       body {
-        padding-top: 68px;
+        padding-top: 64px;  /* nav height */
+        padding-bottom: 60px; /* footer height */
       }
       nav {
-        padding: 10px 0;
+        height: 60px;
+        padding: 8px 0;
       }
       .nav-container {
         padding: 0 14px;
@@ -588,12 +586,27 @@
         width: 20px;
         font-size: 0.8rem;
       }
+
+      /* footer fixed bottom */
       footer {
-        padding: 20px 0;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 0;
+        margin-top: 0;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #1a1a2e, #16213e);
+        box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.2);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
       }
       .footer-powered {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
       }
+
       .converter-card {
         padding: 20px 16px;
       }
@@ -623,12 +636,16 @@
         gap: 4px;
       }
     }
+
+    /* Small mobile (≤ 480px) */
     @media (max-width: 480px) {
       body {
-        padding-top: 62px;
+        padding-top: 56px;
+        padding-bottom: 54px;
       }
       nav {
-        padding: 8px 0;
+        height: 52px;
+        padding: 6px 0;
       }
       .nav-container {
         padding: 0 12px;
@@ -649,36 +666,74 @@
         height: 24px;
       }
       .nav-links-mobile {
-        padding: 12px 16px 10px;
-        gap: 0.4rem;
+        padding: 10px 14px 8px;
+        gap: 0.3rem;
       }
       .nav-links-mobile a {
-        font-size: 0.85rem;
-        padding: 6px 0;
+        font-size: 0.8rem;
+        padding: 5px 0;
       }
       .nav-links-mobile a i {
-        width: 20px;
-        font-size: 0.8rem;
+        width: 18px;
+        font-size: 0.7rem;
+      }
+      footer {
+        height: 50px;
+        padding: 10px 0;
       }
       .footer-powered {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
       }
     }
+
+    /* Desktop (≥ 769px): footer normal flow, navbar fixed */
     @media (min-width: 769px) {
+      body {
+        padding-top: 76px;
+        padding-bottom: 0;
+      }
+      nav {
+        height: 76px;
+        padding: 14px 0;
+      }
+      .nav-container {
+        padding: 0 20px;
+      }
       .nav-left {
-        flex: 1;
-        justify-content: space-between;
+        gap: 12px;
       }
       .hamburger {
-        display: block !important;
         font-size: 1.8rem;
         padding: 8px 12px;
+      }
+      .logo {
+        font-size: 1.5rem;
+        gap: 8px;
+      }
+      .logo-icon {
+        width: 32px;
+        height: 32px;
       }
       .nav-links-mobile {
         max-width: 300px;
         right: 0;
         left: auto;
         border-radius: 0 0 16px 16px;
+      }
+
+      /* footer normal flow */
+      footer {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        height: auto;
+        padding: 30px 0;
+        margin-top: 60px;
+        box-shadow: none;
+      }
+      .footer-powered {
+        font-size: 1rem;
       }
     }
   </style>
@@ -811,15 +866,14 @@
   <footer>
     <div class="footer-content">
       <div class="footer-powered">
-        <i class=""></i> Powered by
+        Power by
         <a href="https://www.protoolss.online" target="_blank" rel="noopener noreferrer">www.protoolss.online</a>
-        <i class="" style="color: #ff6b6b;"></i>
       </div>
     </div>
   </footer>
 
   <!-- ============================================================
-       SCRIPTS
+       SCRIPTS (unchanged)
   ============================================================ -->
   <script>
     // ============================================================
